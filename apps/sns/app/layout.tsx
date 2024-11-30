@@ -34,3 +34,11 @@ export default function RootLayout({
     </html>
   );
 }
+
+{
+  /* <RootLayout>
+  <(필요시)각각의Layout>
+    <각 URL마다의 Page />
+  </(필요시)각각의Layout>
+</RootLayout> */
+}

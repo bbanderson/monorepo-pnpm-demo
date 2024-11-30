@@ -66,3 +66,35 @@ packages:
 
 - `packages/@company/design-system` : 우리의 디자인시스템 그 자체
   1. 열심히 개발한다.
+
+6. app 기준으로 초기 세팅 잘하기
+1. `apps/` 안에다가 제공하고자 하는 서비스를 이름으로 하는 폴더를 생성.
+   - `apps/sns`
+1. 해당 폴더에 들어가서(`cd apps/sns`), 초기세팅을 한다.
+
+   - Storybook : `pnpm dlx storybook@latest init`
+   - Next.js : `npx create-next-app@latest`
+
+1. npx 스러운 친구가 초기 세팅을 통해 필요한 파일 및 폴더들을 그 안에 다 해주면 -> 하위에 생긴 `package.json` 내부의 명령어를 루트의 `package.json`과 연결해준다.
+
+```
+{
+  "<내부패키지이름:명령어>": "pnpm --filter <내부패키지이름> <내부패키지명령어>"
+}
+```
+
+2. `pnpm <내부패키지이름:명령어>`로 실행
+   ex. `pnpm sns:dev`
+
+3. 각 프로젝트마다 필요한 라이브러리가 있다면, 루트에서 아래 명령어 사용
+   `pnpm --filter <내부패키지이름> add (-D) <라이브러리이름>`
+   ex. `pnpm --filter sns add styled-components`
+
+   만약에, 모노레포 안에 있는 우리 내부 패키지라면?
+   => 사용하고자 하는 곳(필요한 곳)에 있는 `package.json` **안에서, 아래와 같이 작성 후, 루트에서 `pnpm i`**
+
+```
+"<패키지이름>": "workspace:*"
+```
+
+ex. "design-system": "workspace:\*"

@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "sns:dev": "pnpm --filter sns dev",
+    "sns:build": "pnpm --filter sns build",
+    "sns:start": "pnpm --filter sns start",
+    "sns:lint": "pnpm --filter sns lint",
     "storybook": "pnpm --filter storybook storybook"
   },
   "keywords": [],

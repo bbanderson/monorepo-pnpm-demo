@@ -275,5 +275,5 @@ pnpm --filter sns add design-system --workspace -E
 ```
 (sns) package.json
 ```json
-"design-system": "workspace:\*"
+"design-system": "workspace:*"
 ```

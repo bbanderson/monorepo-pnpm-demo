@@ -77,106 +77,108 @@
 
 ### 4-1. design-system package를 만든다면? (우리의 디자인시스템 패키지)
   1. `packages` 안에 `@<팀/회사명>` 폴더를 만들고, 그 안에 다시 `design-system` 폴더를 만든다.
-  > `@<팀/회사명>`을 붙이는 이유는, 기존 외부 라이브러리와 (관습상) 구분하기 위함 
-- `packages/@company/design-system` : 우리의 디자인시스템 그 자체
+
+     > `@<팀/회사명>`을 붙이는 이유는, 기존 외부 라이브러리와 (관습상) 구분하기 위함 
 
   2. `design-system` 폴더로 이동하여, npm init을 하고, typescript 설치&init을 한다.
-    ```
-    cd packages/@company/design-system
-    pnpm add typescript
-    pnpm tsc --init
-    ```
+      ```
+      cd packages/@company/design-system
+      pnpm add typescript
+      pnpm tsc --init
+      ```
 
   3. 디자인토큰을 만들고 tailwindcss, styled-components 등 라이브러리에 theme 타입을 주입한다.
 
-    ```typescript
-    import { componentToken, referenceToken, systemToken } from "./colors";
-    import { typography } from "./typography";
+      ```typescript
+      import { componentToken, referenceToken, systemToken } from "./colors";
+      import { typography } from "./typography";
 
-    export const theme = {
-      colors: {
-        ref: referenceToken,
-        sys: systemToken,
-        comp: componentToken,
-      },
-      fontSize: typography,
-    };
+      export const theme = {
+        colors: {
+          ref: referenceToken,
+          sys: systemToken,
+          comp: componentToken,
+        },
+        fontSize: typography,
+      };
 
-    export type DesignSystemTheme = typeof theme;
+      export type DesignSystemTheme = typeof theme;
 
-    declare module "styled-components" {
-      export interface DefaultTheme extends DesignSystemTheme {}
-    }
-    ```
+      declare module "styled-components" {
+        export interface DefaultTheme extends DesignSystemTheme {}
+      }
+      ```
 
   4. 앞으로 계속 컴포넌트를 열심히 개발한다.
-    ```
-      .
-      ├── components
-      │   ├── Button.tsx
-      │   ├── icons
-      │   │   └── CheckIcon.tsx
-      │   └── Input.tsx
-      ├── lib
-      │   └── theme
-      │       ├── colors.ts
-      │       ├── index.ts
-      │       └── typography.ts
-    ```
+      ```
+        .
+        ├── components
+        │   ├── Button.tsx
+        │   ├── icons
+        │   │   └── CheckIcon.tsx
+        │   └── Input.tsx
+        ├── lib
+        │   └── theme
+        │       ├── colors.ts
+        │       ├── index.ts
+        │       └── typography.ts
+      ```
 
 ### 4-2. storybook app을 만든다면? (우리의 디자인시스템을 보여줄 서비스)
   1. `apps` 안에 `storybook` 폴더를 만든다.
   2. 루트가 아닌, storybook 폴더에서 프로젝트 초기세팅을 한다.
-  
-    pnpm dlx storybook@latest init 
-    
-  > 여기서, "React + Vite"를 사용하는 것이 좋다. (굳이 Next.js 필요 X)
 
-  > 위 design-system 초기세팅에서도 보았듯이, "초기 세팅"에서만 이렇게 방금 만든 폴더로 진입해서 하고, 다시 루트 디렉토리로 빠져나가면 된다.
+      ```
+      pnpm dlx storybook@latest init
+      ```
+
+      > 여기서, "React + Vite"를 사용하는 것이 좋다. (굳이 Next.js 필요 X)
+
+      > 위 design-system 초기세팅에서도 보았듯이, "초기 세팅"에서만 이렇게 방금 만든 폴더로 진입해서 하고, 다시 루트 디렉토리로 빠져나가면 된다.
   3. 루트 디렉토리로 다시 나와서, 루트 디렉토리에 있는 `package.json`과 방금 만든 `apps/storybook`에 만들어진 `package.json`을 연결한다.
   
-  (루트) package.json
-  ```
-    storybook: "pnpm --filter design-system storybook"
-  ```
+      (루트) package.json
+      ```
+        storybook: "pnpm --filter design-system storybook"
+      ```
   4. 이제 루트 디렉토리에서 `pnpm storybook`으로 스토리북 실행 가능하다.
 
   5. story 파일에 우리가 만든 디자인 컴포넌트를 불러오기 위해, 루트에서 `storybook` app에 `design-system`을 설치한다.
 
       아래 명령어를 루트에서 사용하면 된다.
    
-    pnpm --filter storybook add design-system --workspace -E
+         pnpm --filter storybook add design-system --workspace -E
 
-  > --workspace : npm 레지스트리가 아니라, 우리의 모노레포 워크스페이스 내부에 있는 폴더임을 명시<br> -E : 버전을 ^나 ~가 아니라, 정확히 일치시킴을 명시
+        > --workspace : npm 레지스트리가 아니라, 우리의 모노레포 워크스페이스 내부에 있는 폴더임을 명시<br> -E : 버전을 ^나 ~가 아니라, 정확히 일치시킴을 명시
 
   6. story 파일을 작성한다.
 
-  ```typescript
-  import { Button } from "design-system/components/Button";
-  import type { Meta, StoryObj } from "@storybook/react";
+      ```typescript
+      import { Button } from "design-system/components/Button";
+      import type { Meta, StoryObj } from "@storybook/react";
 
-  const meta = {
-    title: "@company/design-system/Button",
-    component: Button,
-    parameters: {
-      layout: "centered",
-    },
-    tags: ["autodocs"],
-    argTypes: {},
-  } satisfies Meta<typeof Button>;
+      const meta = {
+        title: "@company/design-system/Button",
+        component: Button,
+        parameters: {
+          layout: "centered",
+        },
+        tags: ["autodocs"],
+        argTypes: {},
+      } satisfies Meta<typeof Button>;
 
-  export default meta;
-  type Story = StoryObj<typeof meta>;
+      export default meta;
+      type Story = StoryObj<typeof meta>;
 
-  export const Primary: Story = {
-    args: {
-      size: "2xl",
-      hierarchy: "Primary",
-      destructive: false,
-      children: "Button",
-    },
-  };
-  ```
+      export const Primary: Story = {
+        args: {
+          size: "2xl",
+          hierarchy: "Primary",
+          destructive: false,
+          children: "Button",
+        },
+      };
+      ```
 
   7. 4번과 마찬가지로, 루트에서 `pnpm storybook`을 실행함으로써 즉시 확인 가능하다.
 

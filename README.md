@@ -139,7 +139,7 @@
   
       (루트) package.json
       ```
-        storybook: "pnpm --filter design-system storybook"
+        storybook: "pnpm --filter storybook storybook"
       ```
   4. 이제 루트 디렉토리에서 `pnpm storybook`으로 스토리북 실행 가능하다.
 
@@ -269,7 +269,7 @@ pnpm --filter sns add design-system --workspace -E
 ```
 
 - `--workspace` : npm 레지스트리가 아니라, 우리의 모노레포 워크스페이스 내부에 있는 폴더임을 명시
-- `-E` : 버전을 ^나 ~가 아니라, 정확히 일치시킴을 명시
+- `-E` : 버전을 ^나 ~가 아니라, 정확히 일치시킴을 명시 `(workspace:*)`
 
 이는 아래와 같이 수요자의 `package.json`에 직접 적은 후에 `pnpm i`를 하는 것과 동일한 효과를 준다.
 ```json
